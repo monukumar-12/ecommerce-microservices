@@ -1,7 +1,6 @@
 jwt:
   secretKey: asdfkasdf89as7dfasd9fyuakjshdfa87sdf8iasuhfjas9d8f7as8idfuhjasd89f7asdi8fu
 
-
 server:
   port: 8080
 
@@ -29,10 +28,9 @@ spring:
               predicates:
                 - Path=/inventory/**
               filters:
-
                 - name: Authentication
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://discovery-service:8761/eureka

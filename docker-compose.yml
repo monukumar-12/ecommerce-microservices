@@ -1,0 +1,48 @@
+services:
+  discovery-service:
+    image: monumishra12/discovery-service:latest
+    ports:
+      - "8761:8761"
+
+  postgres-inventory:
+    image: pgvector/pgvector:0.8.2-pg18-trixie
+    environment:
+      POSTGRES_DB: inventoryDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  postgres-order:
+    image: pgvector/pgvector:0.8.2-pg18-trixie
+    environment:
+      POSTGRES_DB: orderDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+
+  inventory-service:
+    image: monumishra12/inventory-service:latest
+    ports:
+      - "9010:9010"
+    depends_on:
+      - discovery-service
+      - postgres-inventory
+
+  order-service:
+    image: monumishra12/order-service:latest
+    ports:
+      - "9020:9020"
+    depends_on:
+      - discovery-service
+      - postgres-order
+
+  api-gateway:
+    image: monumishra12/api-gateway:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-service
+      - inventory-service
+      - order-service
